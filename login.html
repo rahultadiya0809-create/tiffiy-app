@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tiffify – Login & Register</title>
+<meta name="description" content="Login or create your Tiffify account. Fresh homestyle tiffin delivered daily.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=Kenia&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="login-styles.css">
+</head>
+<body>
+
+<!-- PARTICLES CANVAS -->
+<canvas id="particles"></canvas>
+
+<!-- LEFT PANEL -->
+<div class="left-panel">
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  <div class="left-content">
+    <a href="tiffify.html" class="brand-logo" id="brand-logo">
+      <span class="brand-emoji">🍱</span>
+      <span class="brand-name">TIFFIFY</span>
+    </a>
+    <div class="hero-circle">
+      <span class="hero-emoji">🍛</span>
+      <div class="orbit"></div>
+      <div class="orbit orbit-2"></div>
+    </div>
+    <h2 class="left-tagline">Fresh <em>Homestyle</em> Tiffin<br>Delivered Daily</h2>
+    <p class="left-sub">Join thousands enjoying authentic home-cooked meals</p>
+    <div class="stats-row">
+      <div class="stat-item"><div class="num" data-target="50">0</div><div class="lbl">Restaurants</div></div>
+      <div class="stat-item"><div class="num" data-target="10000">0</div><div class="lbl">Happy Customers</div></div>
+      <div class="stat-item"><div class="num" data-target="30">0</div><div class="lbl">Min Delivery</div></div>
+    </div>
+    <div class="trust-badges">
+      <span>🔒 256-bit SSL</span>
+      <span>⭐ 4.9 Rating</span>
+      <span>🚀 Fast Delivery</span>
+    </div>
+  </div>
+</div>
+
+<!-- RIGHT PANEL -->
+<div class="right-panel">
+  <div class="login-box" id="loginBox">
+    <!-- Mobile brand -->
+    <div class="mobile-brand">
+      <span>🍱</span> <span class="mb-name">TIFFIFY</span>
+    </div>
+    <a href="tiffify.html" class="back-link" id="back-link">← Back to Home</a>
+
+    <!-- TAB TOGGLE -->
+    <div class="tab-toggle" id="tabToggle">
+      <button class="tab-btn active" id="loginTab" onclick="switchTab('login')">Login</button>
+      <button class="tab-btn" id="registerTab" onclick="switchTab('register')">Register</button>
+      <div class="tab-slider" id="tabSlider"></div>
+    </div>
+
+    <!-- ====== LOGIN FORM ====== -->
+    <div class="form-view active" id="loginView">
+      <div class="form-header">
+        <div class="form-badge">🔐 Secure Login</div>
+        <h1>Welcome back!</h1>
+        <p>Enter your credentials to continue.</p>
+      </div>
+      <div class="field">
+        <label for="loginEmail">Email Address</label>
+        <div class="input-wrap"><span class="input-icon">✉️</span>
+          <input type="email" id="loginEmail" placeholder="you@email.com" autocomplete="email">
+        </div>
+        <div class="field-error" id="loginEmailError">Please enter a valid email</div>
+      </div>
+      <div class="field">
+        <label for="loginPassword">Password</label>
+        <div class="input-wrap"><span class="input-icon">🔑</span>
+          <input type="password" id="loginPassword" placeholder="Enter your password" autocomplete="current-password">
+          <button type="button" class="eye-btn" id="loginEyeBtn" onclick="togglePassword('loginPassword','loginEyeBtn')">👁️</button>
+        </div>
+        <div class="field-error" id="loginPasswordError">Password is required</div>
+      </div>
+      <div class="row-between">
+        <label class="checkbox-field"><input type="checkbox" id="rememberMe"> Remember me</label>
+        <a href="#" class="forgot-link" onclick="showToast('📧 Password reset link sent!','success')">Forgot password?</a>
+      </div>
+      <button class="submit-btn" id="loginBtn" onclick="handleLogin()">
+        <span class="btn-text">Login →</span><div class="spinner"></div>
+      </button>
+      <div class="divider">or continue with</div>
+      <a href="#" class="social-btn" onclick="showToast('Google login coming soon!','')">
+        <img src="https://www.google.com/favicon.ico" width="18" height="18" alt="Google"> Continue with Google
+      </a>
+      <div class="form-footer">New to Tiffify? <a href="#" onclick="switchTab('register')">Create Account</a></div>
+    </div>
+
+    <!-- ====== REGISTER FORM ====== -->
+    <div class="form-view" id="registerView">
+      <!-- STEP INDICATOR -->
+      <div class="steps-indicator" id="stepsIndicator">
+        <div class="step-dot active" id="dot1">1</div>
+        <div class="step-line" id="line1"></div>
+        <div class="step-dot pending" id="dot2">2</div>
+        <div class="step-line" id="line2"></div>
+        <div class="step-dot pending" id="dot3">3</div>
+        <div class="step-line" id="line3"></div>
+        <div class="step-dot pending" id="dot4">✓</div>
+      </div>
+      <div class="steps-labels">
+        <div class="step-lbl-item active" id="lbl1">Info</div>
+        <div class="step-lbl-item" id="lbl2">Security</div>
+        <div class="step-lbl-item" id="lbl3">Verify</div>
+        <div class="step-lbl-item" id="lbl4">Done</div>
+      </div>
+
+      <!-- REG STEP 1: Info -->
+      <div class="reg-panel active" id="regPanel1">
+        <div class="form-header">
+          <div class="form-badge">📝 Create Account</div>
+          <h1>Join Tiffify!</h1>
+          <p>Fill in your details to get started.</p>
+        </div>
+        <div class="field">
+          <label for="regName">Full Name</label>
+          <div class="input-wrap"><span class="input-icon">👤</span>
+            <input type="text" id="regName" placeholder="Rahul Verma" autocomplete="name">
+          </div>
+          <div class="field-error" id="regNameError">Please enter your full name</div>
+        </div>
+        <div class="field">
+          <label for="regPhone">Mobile Number</label>
+          <div class="phone-group">
+            <select class="country-code" id="countryCode">
+              <option value="+91">🇮🇳 +91</option>
+              <option value="+1">🇺🇸 +1</option>
+              <option value="+44">🇬🇧 +44</option>
+              <option value="+971">🇦🇪 +971</option>
+            </select>
+            <div class="input-wrap" style="flex:1"><span class="input-icon">📱</span>
+              <input type="tel" id="regPhone" placeholder="98765 43210" maxlength="10" autocomplete="tel">
+            </div>
+          </div>
+          <div class="field-error" id="regPhoneError">Enter a valid 10-digit number</div>
+        </div>
+        <div class="field">
+          <label for="regEmail">Email Address</label>
+          <div class="input-wrap"><span class="input-icon">✉️</span>
+            <input type="email" id="regEmail" placeholder="rahul@email.com" autocomplete="email">
+          </div>
+          <div class="field-error" id="regEmailError">Enter a valid email address</div>
+        </div>
+        <div class="field">
+          <label for="regCity">City</label>
+          <div class="input-wrap"><span class="input-icon">📍</span>
+            <select id="regCity" style="padding-left:2.8rem;">
+              <option value="">Select your city</option>
+              <option>Jaipur</option><option>Ajmer</option><option>Bhilwara</option>
+              <option>Udaipur</option><option>Jodhpur</option><option>Kota</option>
+              <option>Bikaner</option><option>Other</option>
+            </select>
+          </div>
+          <div class="field-error" id="regCityError">Please select your city</div>
+        </div>
+        <button class="submit-btn" onclick="regStep1Next()">
+          <span class="btn-text">Next: Set Password →</span><div class="spinner"></div>
+        </button>
+      </div>
+
+      <!-- REG STEP 2: Password -->
+      <div class="reg-panel" id="regPanel2">
+        <div class="form-header">
+          <div class="form-badge">🔒 Secure Your Account</div>
+          <h1>Create Password</h1>
+          <p>Set a strong password to protect your account.</p>
+        </div>
+        <div class="field">
+          <label for="regPassword">Password</label>
+          <div class="input-wrap"><span class="input-icon">🔑</span>
+            <input type="password" id="regPassword" placeholder="Min 8 characters" oninput="checkStrength()">
+            <button type="button" class="eye-btn" id="regEyeBtn" onclick="togglePassword('regPassword','regEyeBtn')">👁️</button>
+          </div>
+          <div class="password-strength">
+            <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+            <div class="strength-text" id="strengthText"></div>
+          </div>
+          <div class="field-error" id="regPassError">Password must be at least 8 characters</div>
+        </div>
+        <div class="field">
+          <label for="regConfirm">Confirm Password</label>
+          <div class="input-wrap"><span class="input-icon">🔐</span>
+            <input type="password" id="regConfirm" placeholder="Re-enter password">
+            <button type="button" class="eye-btn" id="regConfEyeBtn" onclick="togglePassword('regConfirm','regConfEyeBtn')">👁️</button>
+          </div>
+          <div class="field-error" id="regConfError">Passwords do not match</div>
+        </div>
+        <div class="checkbox-field">
+          <input type="checkbox" id="agreeTerms">
+          <label for="agreeTerms">I agree to <a href="#">Terms</a> & <a href="#">Privacy Policy</a></label>
+        </div>
+        <div class="btn-row">
+          <button class="submit-btn outline" onclick="goRegStep(1)"><span class="btn-text">← Back</span></button>
+          <button class="submit-btn" id="sendOtpBtn" onclick="regStep2Next()">
+            <span class="btn-text">Send Email OTP →</span><div class="spinner"></div>
+          </button>
+        </div>
+      </div>
+
+      <!-- REG STEP 3: Email OTP -->
+      <div class="reg-panel" id="regPanel3">
+        <div class="form-header">
+          <div class="form-badge">📱 Phone Verification</div>
+          <h1>Check your phone!</h1>
+          <p id="otpSentMsg">We've sent a 6-digit OTP to your phone number.</p>
+        </div>
+        <div class="otp-info-box" id="otpInfoBox" style="display:none;">
+          <span class="icon">🔒</span>
+          <p>Demo OTP: <strong id="otpDisplay">——</strong><br>
+          <span style="font-size:0.75rem;opacity:0.8;">(Demo mode — Twilio not configured. In production, sent via SMS)</span></p>
+        </div>
+        <div class="otp-group">
+          <input type="text" class="otp-input" maxlength="1" id="otp1" oninput="otpNext(this,'otp2')" onkeydown="otpBack(event,'','otp1')">
+          <input type="text" class="otp-input" maxlength="1" id="otp2" oninput="otpNext(this,'otp3')" onkeydown="otpBack(event,'otp1','otp2')">
+          <input type="text" class="otp-input" maxlength="1" id="otp3" oninput="otpNext(this,'otp4')" onkeydown="otpBack(event,'otp2','otp3')">
+          <input type="text" class="otp-input" maxlength="1" id="otp4" oninput="otpNext(this,'otp5')" onkeydown="otpBack(event,'otp3','otp4')">
+          <input type="text" class="otp-input" maxlength="1" id="otp5" oninput="otpNext(this,'otp6')" onkeydown="otpBack(event,'otp4','otp5')">
+          <input type="text" class="otp-input" maxlength="1" id="otp6" oninput="otpNext(this,'')" onkeydown="otpBack(event,'otp5','otp6')">
+        </div>
+        <div class="otp-timer">
+          OTP expires in <span id="timerDisplay">02:00</span>
+          <button class="resend-btn" id="resendBtn" onclick="resendOTP()">Resend OTP</button>
+        </div>
+        <div class="btn-row">
+          <button class="submit-btn outline" onclick="goRegStep(2)"><span class="btn-text">← Back</span></button>
+          <button class="submit-btn" id="verifyBtn" onclick="verifyOTP()">
+            <span class="btn-text">Verify & Register 🎉</span><div class="spinner"></div>
+          </button>
+        </div>
+        <div class="form-footer"><a href="#" onclick="goRegStep(1)">← Change details</a></div>
+      </div>
+
+      <!-- REG STEP 4: Success -->
+      <div class="reg-panel" id="regPanel4">
+        <div class="success-screen visible">
+          <div class="success-icon"><span class="confetti-trigger">✅</span></div>
+          <div class="excel-badge">📊 Saved to Excel</div>
+          <h2>Welcome aboard!</h2>
+          <p>Your account is verified, <strong id="welcomeName"></strong>!</p>
+          <div class="user-summary" id="userSummary"></div>
+          <button class="submit-btn" onclick="window.location.href='tiffify.html'">
+            <span class="btn-text">Go to Dashboard 🍱</span>
+          </button>
+          <div class="form-footer">
+            <p style="font-size:0.78rem;color:var(--muted);margin-top:1rem;">
+              📊 Login data saved to <strong>tiffify_customers.xlsx</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="tiffify-otp-api/login-script.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "tiffify",
+  "version": "1.0.0",
+  "description": "Tiffify Web App and API",
+  "main": "tiffify-otp-api/server.js",
+  "scripts": {
+    "start": "node tiffify-otp-api/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "crypto": "^1.0.1",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "nodemailer": "^8.0.7",
+    "twilio": "^6.0.2"
+  }
+}
