@@ -240,7 +240,13 @@ setInterval(() => {
 
 const path = require('path');
 // Serve static files from the parent directory
-app.use(express.static(path.join(__dirname, '../'))); 
+app.use(express.static(path.join(__dirname, '../')));
+
+// ── Root Route → serve tiffiy.html ──────────
+// (No index.html in repo, so we serve tiffiy.html explicitly)
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../tiffiy.html'));
+});
 
 
 // ── Start Server ──────────────────────────
