@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+tiffify-otp-api/node_modules/
+
+# Environment variables (keep secrets safe!)
+.env
+tiffify-otp-api/.env
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db

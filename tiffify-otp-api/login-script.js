@@ -6,9 +6,8 @@ let generatedOTP = '';
 let timerInterval = null;
 let userData = {};
 
-// 🔴 Change this to your live Glitch URL after deploying the backend!
-// Example: const API_BASE_URL = 'https://your-glitch-project.glitch.me';
-const API_BASE_URL = 'http://localhost:3000';
+// ✅ Empty string = relative path → works on localhost AND on Render automatically!
+const API_BASE_URL = '';
 
 
 // ─── Client-side OTP Generator ──────────────────────────────
