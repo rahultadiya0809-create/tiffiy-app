@@ -2,48 +2,36 @@ require('dotenv').config();
 const express    = require('express');
 const cors       = require('cors');
 const crypto     = require('crypto');
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 const app        = express();
 
 app.use(cors());
 app.use(express.json());
 
 // ══════════════════════════════════════════
-//   NODEMAILER — Gmail SMTP (Completely Free)
+//   RESEND — HTTP Email API (Works on Render free tier!)
+//   Gmail SMTP is BLOCKED by Render's free tier.
+//   Resend uses HTTP so it's never blocked.
 // ══════════════════════════════════════════
-let transporter = null;
+let resend = null;
 
-if (process.env.GMAIL_USER && !process.env.GMAIL_USER.includes('youremail')) {
-  transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_APP_PASSWORD
-    }
-  });
-  // Verify connection
-  transporter.verify((err) => {
-    if (err) {
-      console.error('❌ Gmail connection failed:', err.message);
-      transporter = null;
-    } else {
-      console.log('✅ Gmail SMTP connected — real email OTP enabled!');
-    }
-  });
+if (process.env.RESEND_API_KEY) {
+  resend = new Resend(process.env.RESEND_API_KEY);
+  console.log('✅ Resend API configured — real email OTP enabled!');
 } else {
-  console.log('⚠️  Gmail not configured — OTP shown on screen (demo mode)');
-  console.log('   → Fill GMAIL_USER and GMAIL_APP_PASSWORD in .env to enable real email OTP');
+  console.log('⚠️  RESEND_API_KEY not set — running in demo mode');
+  console.log('   → Get a free key at https://resend.com and add RESEND_API_KEY to env');
 }
 
 // ── Helper: Send OTP Email ────────────────
 async function sendOTPEmail(toEmail, otp) {
-  if (!transporter) {
+  if (!resend) {
     console.log(`\n📧 [DEMO MODE] OTP for ${toEmail}: ${otp}\n`);
     return { sent: false, demo: true };
   }
   try {
-    await transporter.sendMail({
-      from:    `"Tiffify 🍱" <${process.env.GMAIL_USER}>`,
+    const { data, error } = await resend.emails.send({
+      from:    'Tiffify <onboarding@resend.dev>',
       to:      toEmail,
       subject: 'Your Tiffify Verification Code',
       html: `
@@ -66,13 +54,19 @@ async function sendOTPEmail(toEmail, otp) {
         </div>
       `
     });
-    console.log(`📧 OTP email sent to ${toEmail}`);
+
+    if (error) {
+      console.error(`❌ Resend error: ${error.message}`);
+      return { sent: false, error: error.message };
+    }
+    console.log(`📧 OTP email sent to ${toEmail} (id: ${data.id})`);
     return { sent: true };
   } catch (err) {
     console.error(`❌ Email failed: ${err.message}`);
     return { sent: false, error: err.message };
   }
 }
+
 
 // ══════════════════════════════════════════
 //   IN-MEMORY OTP STORE
