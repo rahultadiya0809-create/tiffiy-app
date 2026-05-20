@@ -289,17 +289,27 @@ setInterval(() => {
 }, 5 * 60 * 1000);
 
 
-// ── Start Server ──────────────────────────
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log('════════════════════════════════════════');
-  console.log('  🍱 Tiffify OTP API Server');
-  console.log(`  🚀 Running at http://localhost:${PORT}`);
-  console.log('  📧 Email mode: ' + (transporter ? 'Gmail SMTP' : 'Demo (set GMAIL_USER + GMAIL_APP_PASSWORD)'));
-  console.log('  📍 Routes:');
-  console.log('     POST /api/generate-otp  { email }');
-  console.log('     POST /api/verify-otp    { email, otp }');
-  console.log('     POST /api/resend-otp    { email }');
-  console.log('     GET  /api/status');
-  console.log('════════════════════════════════════════\n');
-});
+// ══════════════════════════════════════════
+//   EXPORT FOR VERCEL (Serverless)
+//   + Start locally when run directly
+// ══════════════════════════════════════════
+
+// Export the app for Vercel serverless functions
+module.exports = app;
+
+// Only start the HTTP server when running locally (node server.js)
+if (require.main === module) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log('════════════════════════════════════════');
+    console.log('  🍱 Tiffify OTP API Server');
+    console.log(`  🚀 Running at http://localhost:${PORT}`);
+    console.log('  📧 Email mode: ' + (transporter ? 'Gmail SMTP' : 'Demo (set GMAIL_USER + GMAIL_APP_PASSWORD)'));
+    console.log('  📍 Routes:');
+    console.log('     POST /api/generate-otp  { email }');
+    console.log('     POST /api/verify-otp    { email, otp }');
+    console.log('     POST /api/resend-otp    { email }');
+    console.log('     GET  /api/status');
+    console.log('════════════════════════════════════════\n');
+  });
+}
