@@ -29,6 +29,9 @@
   "dependencies": {
   
     
+  "@getbrevo/brevo": "^5.0.4",
+  
+    
   "cors": "^2.8.6",
   
     

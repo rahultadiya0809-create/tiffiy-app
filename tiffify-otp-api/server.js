@@ -1,68 +1,97 @@
 require('dotenv').config();
-const express    = require('express');
-const cors       = require('cors');
-const crypto     = require('crypto');
-const { Resend } = require('resend');
-const app        = express();
+const express      = require('express');
+const cors         = require('cors');
+const crypto       = require('crypto');
+const nodemailer   = require('nodemailer');
+const path         = require('path');
+const app          = express();
 
 app.use(cors());
 app.use(express.json());
 
 // ══════════════════════════════════════════
-//   RESEND — HTTP Email API (Works on Render free tier!)
-//   Gmail SMTP is BLOCKED by Render's free tier.
-//   Resend uses HTTP so it's never blocked.
+//   GMAIL SMTP — via Nodemailer
+//   Requires GMAIL_USER and GMAIL_APP_PASSWORD in .env
+//   Get App Password: https://myaccount.google.com/apppasswords
 // ══════════════════════════════════════════
-let resend = null;
+let transporter = null;
 
-if (process.env.RESEND_API_KEY) {
-  resend = new Resend(process.env.RESEND_API_KEY);
-  console.log('✅ Resend API configured — real email OTP enabled!');
+if (process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD) {
+  transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_APP_PASSWORD
+    }
+  });
+
+  // Verify connection on startup
+  transporter.verify((err) => {
+    if (err) {
+      console.error('❌ Gmail SMTP connection failed:', err.message);
+      console.error('   → Check GMAIL_USER and GMAIL_APP_PASSWORD in .env');
+      transporter = null;
+    } else {
+      console.log('✅ Gmail SMTP connected — real email OTP enabled!');
+      console.log(`   → Sending from: ${process.env.GMAIL_USER}`);
+    }
+  });
 } else {
-  console.log('⚠️  RESEND_API_KEY not set — running in demo mode');
-  console.log('   → Get a free key at https://resend.com and add RESEND_API_KEY to env');
+  console.log('⚠️  Gmail credentials not set — running in DEMO MODE');
+  console.log('   → Set GMAIL_USER and GMAIL_APP_PASSWORD in .env');
+  console.log('   → Get App Password: https://myaccount.google.com/apppasswords');
 }
 
-// ── Helper: Send OTP Email ────────────────
+// ── Helper: Send OTP Email via Gmail ─────
 async function sendOTPEmail(toEmail, otp) {
-  if (!resend) {
+  if (!transporter) {
     console.log(`\n📧 [DEMO MODE] OTP for ${toEmail}: ${otp}\n`);
     return { sent: false, demo: true };
   }
-  try {
-    const { data, error } = await resend.emails.send({
-      from:    'Tiffify <onboarding@resend.dev>',
-      to:      toEmail,
-      subject: 'Your Tiffify Verification Code',
-      html: `
-        <div style="font-family:'Segoe UI',sans-serif;max-width:480px;margin:auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
-          <div style="background:linear-gradient(135deg,#FF6B35,#C94E1E);padding:32px;text-align:center;">
-            <h1 style="color:white;margin:0;font-size:28px;letter-spacing:2px;">🍱 TIFFIFY</h1>
-            <p style="color:rgba(255,255,255,0.85);margin:8px 0 0;font-size:14px;">Fresh Homestyle Tiffin Delivered Daily</p>
-          </div>
-          <div style="padding:32px;text-align:center;">
-            <h2 style="color:#1A1208;margin:0 0 8px;">Verify Your Account</h2>
-            <p style="color:#7A6A55;margin:0 0 28px;font-size:14px;">Enter this OTP to complete your registration. Valid for 2 minutes.</p>
-            <div style="background:#FFF0EB;border:2px dashed #FF6B35;border-radius:12px;padding:20px 32px;display:inline-block;">
-              <span style="font-size:42px;font-weight:900;letter-spacing:10px;color:#FF6B35;">${otp}</span>
-            </div>
-            <p style="color:#7A6A55;font-size:12px;margin:24px 0 0;">⚠️ Do not share this OTP with anyone.<br>This code expires in <strong>2 minutes</strong>.</p>
-          </div>
-          <div style="background:#FFF8ED;padding:16px;text-align:center;border-top:1px solid #EDE0CC;">
-            <p style="color:#7A6A55;font-size:12px;margin:0;">© 2025 Tiffify. If you didn't request this, ignore this email.</p>
-          </div>
-        </div>
-      `
-    });
 
-    if (error) {
-      console.error(`❌ Resend error: ${error.message}`);
-      return { sent: false, error: error.message };
-    }
-    console.log(`📧 OTP email sent to ${toEmail} (id: ${data.id})`);
+  const mailOptions = {
+    from: `"🍱 Tiffify" <${process.env.GMAIL_USER}>`,
+    to:   toEmail,
+    subject: '🍱 Your Tiffify Verification Code',
+    html: `
+      <div style="font-family:'Segoe UI',Arial,sans-serif;max-width:480px;margin:auto;background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.10);">
+        <!-- Header -->
+        <div style="background:linear-gradient(135deg,#FF6B35,#C94E1E);padding:32px 24px;text-align:center;">
+          <h1 style="color:#ffffff;margin:0;font-size:32px;letter-spacing:3px;font-weight:900;">🍱 TIFFIFY</h1>
+          <p style="color:rgba(255,255,255,0.88);margin:8px 0 0;font-size:14px;">Fresh Homestyle Tiffin Delivered Daily</p>
+        </div>
+        <!-- Body -->
+        <div style="padding:36px 32px;text-align:center;">
+          <h2 style="color:#1A1208;margin:0 0 10px;font-size:22px;">Verify Your Account</h2>
+          <p style="color:#7A6A55;margin:0 0 28px;font-size:14px;line-height:1.6;">
+            Enter the OTP below to complete your registration.<br>
+            This code is valid for <strong>2 minutes</strong>.
+          </p>
+          <!-- OTP Box -->
+          <div style="background:#FFF0EB;border:2.5px dashed #FF6B35;border-radius:14px;padding:22px 36px;display:inline-block;margin-bottom:8px;">
+            <span style="font-size:46px;font-weight:900;letter-spacing:12px;color:#FF6B35;font-family:monospace;">${otp}</span>
+          </div>
+          <p style="color:#7A6A55;font-size:12px;margin:22px 0 0;">
+            ⚠️ Do not share this OTP with anyone.<br>
+            This code expires in <strong>2 minutes</strong>.
+          </p>
+        </div>
+        <!-- Footer -->
+        <div style="background:#FFF8ED;padding:16px 24px;text-align:center;border-top:1px solid #EDE0CC;">
+          <p style="color:#7A6A55;font-size:12px;margin:0;">
+            © ${new Date().getFullYear()} Tiffify · If you didn't request this, please ignore this email.
+          </p>
+        </div>
+      </div>
+    `
+  };
+
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log(`📧 OTP email sent to ${toEmail} (msgId: ${info.messageId})`);
     return { sent: true };
   } catch (err) {
-    console.error(`❌ Email failed: ${err.message}`);
+    console.error(`❌ Gmail send failed: ${err.message}`);
     return { sent: false, error: err.message };
   }
 }
@@ -70,7 +99,7 @@ async function sendOTPEmail(toEmail, otp) {
 
 // ══════════════════════════════════════════
 //   IN-MEMORY OTP STORE
-//   { "user@email.com": { otp, expiry, attempts } }
+//   { "user@email.com": { otp, expiry, attempts, requestCount, blockUntil } }
 // ══════════════════════════════════════════
 const otpStore = {};
 
@@ -81,6 +110,7 @@ function generateOTP() {
 function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
+
 
 // ══════════════════════════════════════════
 //   ROUTE 1: Generate & Send OTP
@@ -118,14 +148,15 @@ app.post('/api/generate-otp', async (req, res) => {
 
   res.json({
     success:   true,
-    message:   result.sent ? `OTP sent to ${email}` : 'OTP generated (demo mode)',
+    message:   result.sent ? `OTP sent to ${email}` : 'OTP generated (demo mode — set Gmail credentials in .env)',
     emailSent: result.sent,
     demo:      result.demo || false,
     expiresIn: 120,
-    // Only send OTP in response in demo mode
+    // Only include OTP in response when in demo mode (for testing)
     ...(result.demo && { otp })
   });
 });
+
 
 // ══════════════════════════════════════════
 //   ROUTE 2: Verify OTP
@@ -161,7 +192,7 @@ app.post('/api/verify-otp', (req, res) => {
     return res.json({ success: false, message: `Incorrect OTP. ${left} attempt(s) remaining.` });
   }
 
-  // ✅ Correct
+  // ✅ Correct OTP
   delete otpStore[email];
   console.log(`✅ OTP verified for ${email}`);
 
@@ -173,6 +204,7 @@ app.post('/api/verify-otp', (req, res) => {
     token:    crypto.randomBytes(32).toString('hex')
   });
 });
+
 
 // ══════════════════════════════════════════
 //   ROUTE 3: Resend OTP
@@ -209,20 +241,44 @@ app.post('/api/resend-otp', async (req, res) => {
   });
 });
 
+
 // ══════════════════════════════════════════
 //   ROUTE 4: Health Check
+//   GET /api/status
 // ══════════════════════════════════════════
 app.get('/api/status', (req, res) => {
   res.json({
     status:       'running',
     service:      'Tiffify OTP API',
     time:         new Date().toLocaleString('en-IN'),
+    emailMode:    transporter ? 'gmail-smtp' : 'demo',
     emailEnabled: !!transporter,
+    gmailUser:    transporter ? process.env.GMAIL_USER : null,
     activeOTPs:   Object.keys(otpStore).length
   });
 });
 
-// Auto-clean expired OTPs every 5 minutes
+
+// ══════════════════════════════════════════
+//   STATIC FILES + HTML SERVING
+// ══════════════════════════════════════════
+// Serve static files from the parent directory (CSS, JS, images)
+app.use(express.static(path.join(__dirname, '../')));
+
+// Root → serve main app
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../tiffiy.html'));
+});
+
+// Login page
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, '../login.html'));
+});
+
+
+// ══════════════════════════════════════════
+//   AUTO-CLEAN EXPIRED OTPs every 5 minutes
+// ══════════════════════════════════════════
 setInterval(() => {
   const now = Date.now();
   Object.keys(otpStore).forEach(email => {
@@ -232,27 +288,18 @@ setInterval(() => {
   });
 }, 5 * 60 * 1000);
 
-const path = require('path');
-// Serve static files from the parent directory
-app.use(express.static(path.join(__dirname, '../')));
-
-// ── Root Route → serve tiffiy.html ──────────
-// (No index.html in repo, so we serve tiffiy.html explicitly)
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../tiffiy.html'));
-});
-
 
 // ── Start Server ──────────────────────────
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log('════════════════════════════════════');
+  console.log('════════════════════════════════════════');
   console.log('  🍱 Tiffify OTP API Server');
   console.log(`  🚀 Running at http://localhost:${PORT}`);
+  console.log('  📧 Email mode: ' + (transporter ? 'Gmail SMTP' : 'Demo (set GMAIL_USER + GMAIL_APP_PASSWORD)'));
   console.log('  📍 Routes:');
   console.log('     POST /api/generate-otp  { email }');
   console.log('     POST /api/verify-otp    { email, otp }');
   console.log('     POST /api/resend-otp    { email }');
   console.log('     GET  /api/status');
-  console.log('════════════════════════════════════\n');
+  console.log('════════════════════════════════════════\n');
 });
