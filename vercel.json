@@ -1,15 +1,6 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "tiffify-otp-api/server.js",
-      "use": "@vercel/node"
-    }
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index.js" }
   ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "tiffify-otp-api/server.js"
-    }
-  ]
+  "cleanUrls": true
 }
