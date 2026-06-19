@@ -179,6 +179,7 @@ cleanup_thread.start()
 #   Body: { email: "user@example.com" }
 # ══════════════════════════════════════════════════════════════
 @app.route('/api/generate-otp', methods=['POST'])
+@app.route('/generate-otp', methods=['POST'])
 def api_generate_otp():
     data = request.get_json(silent=True) or {}
     email = data.get('email', '').strip()
@@ -236,6 +237,7 @@ def api_generate_otp():
 #   Body: { email: "user@example.com", otp: "123456" }
 # ══════════════════════════════════════════════════════════════
 @app.route('/api/verify-otp', methods=['POST'])
+@app.route('/verify-otp', methods=['POST'])
 def api_verify_otp():
     data = request.get_json(silent=True) or {}
     email = data.get('email', '').strip()
@@ -289,6 +291,7 @@ def api_verify_otp():
 #   Body: { email: "user@example.com" }
 # ══════════════════════════════════════════════════════════════
 @app.route('/api/resend-otp', methods=['POST'])
+@app.route('/resend-otp', methods=['POST'])
 def api_resend_otp():
     data = request.get_json(silent=True) or {}
     email = data.get('email', '').strip()
@@ -331,6 +334,7 @@ def api_resend_otp():
 #   GET /api/status
 # ══════════════════════════════════════════════════════════════
 @app.route('/api/status', methods=['GET'])
+@app.route('/status', methods=['GET'])
 def api_status():
     return jsonify({
         'status': 'running',
