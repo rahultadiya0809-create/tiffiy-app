@@ -156,8 +156,8 @@ function regStep1Next() {
 // ─── Registration Step 2 — Send Email OTP (Free via Gmail) ───
 async function regStep2Next() {
   const password = document.getElementById('regPassword').value;
-  const confirm  = document.getElementById('regConfirm').value;
-  const agreed   = document.getElementById('agreeTerms').checked;
+  const confirm = document.getElementById('regConfirm').value;
+  const agreed = document.getElementById('agreeTerms').checked;
   let valid = true;
 
   if (password.length < 8) { showFieldError('regPassError'); valid = false; } else { hideFieldError('regPassError'); }
@@ -172,10 +172,10 @@ async function regStep2Next() {
   btn.classList.add('loading');
 
   try {
-    const res  = await fetch(`${API_BASE_URL}/api/generate-otp`, {
-      method:  'POST',
+    const res = await fetch(`${API_BASE_URL}/api/generate-otp`, {
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ email: userData.email })
+      body: JSON.stringify({ email: userData.email })
     });
     const data = await res.json();
     btn.classList.remove('loading');
@@ -214,7 +214,7 @@ async function regStep2Next() {
 
 // ─── Verify OTP — via Server API ────────────────────────────
 async function verifyOTP() {
-  const entered = ['otp1','otp2','otp3','otp4','otp5','otp6']
+  const entered = ['otp1', 'otp2', 'otp3', 'otp4', 'otp5', 'otp6']
     .map(id => document.getElementById(id).value).join('');
 
   if (entered.length < 6) {
@@ -225,10 +225,10 @@ async function verifyOTP() {
   btn.classList.add('loading');
 
   try {
-    const res  = await fetch(`${API_BASE_URL}/api/verify-otp`, {
-      method:  'POST',
+    const res = await fetch(`${API_BASE_URL}/api/verify-otp`, {
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ email: userData.email, otp: entered })
+      body: JSON.stringify({ email: userData.email, otp: entered })
     });
     const data = await res.json();
     btn.classList.remove('loading');
@@ -239,7 +239,7 @@ async function verifyOTP() {
       showSuccessScreen();
     } else {
       showToast('❌ ' + data.message, 'error');
-      ['otp1','otp2','otp3','otp4','otp5','otp6'].forEach(id => {
+      ['otp1', 'otp2', 'otp3', 'otp4', 'otp5', 'otp6'].forEach(id => {
         document.getElementById(id).value = '';
       });
       document.getElementById('otp1').focus();
@@ -305,14 +305,14 @@ function startTimer(seconds) {
     }
   }, 1000);
 }
-      // ─── Resend OTP — via Server API ─────────────────────────
+// ─── Resend OTP — via Server API ─────────────────────────
 async function resendOTP() {
   document.getElementById('resendBtn').disabled = true;
   try {
-    const res  = await fetch(`${API_BASE_URL}/api/resend-otp`, {
-      method:  'POST',
+    const res = await fetch(`${API_BASE_URL}/api/resend-otp`, {
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ email: userData.email })
+      body: JSON.stringify({ email: userData.email })
     });
     const data = await res.json();
 
@@ -332,7 +332,7 @@ async function resendOTP() {
   }
 
   document.getElementById('resendBtn').disabled = false;
-  ['otp1','otp2','otp3','otp4','otp5','otp6'].forEach(id =>
+  ['otp1', 'otp2', 'otp3', 'otp4', 'otp5', 'otp6'].forEach(id =>
     document.getElementById(id).value = '');
   document.getElementById('otp1').focus();
   clearInterval(timerInterval);
@@ -358,12 +358,12 @@ function otpBack(e, prevId, currentId) {
 }
 
 // ─── OTP Paste Support ───────────────────────────────────────
-document.addEventListener('paste', function(e) {
+document.addEventListener('paste', function (e) {
   const active = document.activeElement;
   if (!active || !active.classList.contains('otp-input')) return;
   e.preventDefault();
   const paste = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 6);
-  const inputs = ['otp1','otp2','otp3','otp4','otp5','otp6'];
+  const inputs = ['otp1', 'otp2', 'otp3', 'otp4', 'otp5', 'otp6'];
   paste.split('').forEach((ch, i) => {
     if (inputs[i]) document.getElementById(inputs[i]).value = ch;
   });
@@ -459,7 +459,7 @@ function showToast(msg, type) {
 // ─── Phone formatting ────────────────────────────────────────
 const phoneInput = document.getElementById('regPhone');
 if (phoneInput) {
-  phoneInput.addEventListener('input', function() {
+  phoneInput.addEventListener('input', function () {
     this.value = this.value.replace(/\D/g, '').slice(0, 10);
   });
 }
@@ -484,7 +484,7 @@ function launchConfetti() {
 }
 
 // ─── Enter Key Support ───────────────────────────────────────
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function (e) {
   if (e.key !== 'Enter') return;
   const loginView = document.getElementById('loginView');
   if (loginView && loginView.classList.contains('active')) {

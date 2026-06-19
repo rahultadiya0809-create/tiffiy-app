@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tiffify – Register Your Tiffin Service</title>
+<meta name="description" content="Register your tiffin service on Tiffify. List your homestyle cooking, reach thousands of customers, and grow your tiffin business.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=Kenia&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tiffin-register-styles.css">
+</head>
+<body>
+
+<!-- PARTICLES CANVAS -->
+<canvas id="particles"></canvas>
+
+<!-- LEFT PANEL -->
+<div class="left-panel">
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  <div class="left-content">
+    <a href="tiffiy.html" class="brand-logo" id="brand-logo">
+      <span class="brand-emoji">🍱</span>
+      <span class="brand-name">TIFFIFY</span>
+    </a>
+    <div class="hero-circle">
+      <span class="hero-emoji">👨‍🍳</span>
+      <div class="orbit"></div>
+      <div class="orbit orbit-2"></div>
+    </div>
+    <h2 class="left-tagline">Grow Your <em>Tiffin</em><br>Business With Us</h2>
+    <p class="left-sub">Join 50+ tiffin providers serving 10K+ customers daily</p>
+
+    <ul class="benefit-list">
+      <li><span class="benefit-icon">📈</span> Reach thousands of hungry customers</li>
+      <li><span class="benefit-icon">💰</span> Zero commission for first 3 months</li>
+      <li><span class="benefit-icon">🚀</span> Free marketing & brand promotion</li>
+      <li><span class="benefit-icon">📊</span> Real-time order analytics dashboard</li>
+      <li><span class="benefit-icon">🤝</span> Dedicated partnership support</li>
+    </ul>
+
+    <div class="trust-badges">
+      <span>🔒 Verified Partners</span>
+      <span>⭐ 4.9 Avg. Rating</span>
+      <span>🍱 50+ Services</span>
+    </div>
+  </div>
+</div>
+
+<!-- RIGHT PANEL -->
+<div class="right-panel">
+  <div class="register-box" id="registerBox">
+    <!-- Mobile brand -->
+    <div class="mobile-brand">
+      <span>🍱</span> <span class="mb-name">TIFFIFY</span>
+    </div>
+    <a href="tiffiy.html" class="back-link" id="back-link">← Back to Home</a>
+
+    <!-- PAGE TITLE -->
+    <div class="page-title-section">
+      <div class="page-title-badge">👨‍🍳 For Tiffin Providers</div>
+      <h1>Register Your Tiffin Service</h1>
+      <p>List your service and start receiving orders from customers near you.</p>
+    </div>
+
+    <!-- STEP INDICATOR -->
+    <div class="steps-indicator" id="stepsIndicator">
+      <div class="step-dot active" id="dot1">1</div>
+      <div class="step-line" id="line1"></div>
+      <div class="step-dot pending" id="dot2">2</div>
+      <div class="step-line" id="line2"></div>
+      <div class="step-dot pending" id="dot3">3</div>
+      <div class="step-line" id="line3"></div>
+      <div class="step-dot pending" id="dot4">✓</div>
+    </div>
+    <div class="steps-labels">
+      <div class="step-lbl-item active" id="lbl1">Business</div>
+      <div class="step-lbl-item" id="lbl2">Details</div>
+      <div class="step-lbl-item" id="lbl3">Photos</div>
+      <div class="step-lbl-item" id="lbl4">Submit</div>
+    </div>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- STEP 1: Business Info                       -->
+    <!-- ════════════════════════════════════════════ -->
+    <div class="reg-panel active" id="regPanel1">
+      <div class="form-header">
+        <div class="form-badge">🏪 Business Information</div>
+        <h2>Tell us about your service</h2>
+        <p>Provide basic information about your tiffin business.</p>
+      </div>
+
+      <div class="field">
+        <label for="serviceName">Tiffin Service Name</label>
+        <div class="input-wrap"><span class="input-icon">🏪</span>
+          <input type="text" id="serviceName" placeholder="e.g. Maa Ki Rasoi" autocomplete="organization">
+        </div>
+        <div class="field-error" id="serviceNameError">Please enter your service name</div>
+      </div>
+
+      <div class="field">
+        <label for="ownerName">Owner / Chef Name</label>
+        <div class="input-wrap"><span class="input-icon">👤</span>
+          <input type="text" id="ownerName" placeholder="e.g. Savita Devi" autocomplete="name">
+        </div>
+        <div class="field-error" id="ownerNameError">Please enter the owner's name</div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="servicePhone">Mobile Number</label>
+          <div class="input-wrap"><span class="input-icon">📱</span>
+            <input type="tel" id="servicePhone" placeholder="98765 43210" maxlength="10" autocomplete="tel">
+          </div>
+          <div class="field-error" id="phoneError">Enter a valid 10-digit number</div>
+        </div>
+        <div class="field">
+          <label for="serviceEmail">Email Address</label>
+          <div class="input-wrap"><span class="input-icon">✉️</span>
+            <input type="email" id="serviceEmail" placeholder="you@email.com" autocomplete="email">
+          </div>
+          <div class="field-error" id="emailError">Enter a valid email address</div>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="serviceCity">City</label>
+          <div class="input-wrap"><span class="input-icon">📍</span>
+            <select id="serviceCity" style="padding-left:2.8rem;">
+              <option value="">Select city</option>
+              <option>Jaipur</option><option>Ajmer</option><option>Bhilwara</option>
+              <option>Udaipur</option><option>Jodhpur</option><option>Kota</option>
+              <option>Bikaner</option><option>Delhi</option><option>Mumbai</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field-error" id="cityError">Please select your city</div>
+        </div>
+        <div class="field">
+          <label for="serviceAddress">Full Address</label>
+          <div class="input-wrap"><span class="input-icon">🏠</span>
+            <input type="text" id="serviceAddress" placeholder="Kitchen / Shop address">
+          </div>
+          <div class="field-error" id="addressError">Please enter your address</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Cuisine Type <span style="font-weight:400;color:var(--muted);font-size:0.75rem;">(select all that apply)</span></label>
+        <div class="cuisine-tags">
+          <span class="cuisine-tag" onclick="toggleCuisine(this)">🍛 North Indian</span>
+          <span class="cuisine-tag" onclick="toggleCuisine(this)">🥘 Rajasthani</span>
+          <span class="cuisine-tag" onclick="toggleCuisine(this)">🫕 South Indian</span>
+          <span class="cuisine-tag" onclick="toggleCuisine(this)">🥗 Gujarati</span>
+          <span class="cuisine-tag" onclick="toggleCuisine(this)">🍜 Punjabi</span>
+          <span class="cuisine-tag" onclick="toggleCuisine(this)">🏠 Homestyle</span>
+          <span class="cuisine-tag" onclick="toggleCuisine(this)">🥙 Healthy</span>
+          <span class="cuisine-tag" onclick="toggleCuisine(this)">🍗 Non-Veg Special</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Food Type</label>
+        <div class="veg-toggle">
+          <div class="veg-option" data-value="Veg Only" onclick="selectVegType(this)">🌿 Veg Only</div>
+          <div class="veg-option nonveg" data-value="Non-Veg" onclick="selectVegType(this)">🍗 Non-Veg</div>
+          <div class="veg-option both" data-value="Both" onclick="selectVegType(this)">🍽️ Both</div>
+        </div>
+      </div>
+
+      <button class="submit-btn" onclick="step1Next()">
+        <span class="btn-text">Next: Service Details →</span><div class="spinner"></div>
+      </button>
+    </div>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- STEP 2: Service Details                     -->
+    <!-- ════════════════════════════════════════════ -->
+    <div class="reg-panel" id="regPanel2">
+      <div class="form-header">
+        <div class="form-badge">📋 Service Details</div>
+        <h2>Describe your tiffin service</h2>
+        <p>Help customers understand what makes your tiffin special.</p>
+      </div>
+
+      <div class="field">
+        <label for="menuDesc">Menu Description</label>
+        <textarea id="menuDesc" placeholder="Describe your typical tiffin — what items are included? e.g. 2 Sabzi, Dal, 4 Roti, Rice, Salad, Sweet…" rows="3"></textarea>
+        <div class="field-error" id="menuDescError">Please describe your menu (min 10 characters)</div>
+        <div class="field-hint">Tip: Mention specific dishes that make your tiffin stand out!</div>
+      </div>
+
+      <div class="field">
+        <label>Price Range (per meal)</label>
+        <div class="price-row">
+          <div class="input-wrap">
+            <span class="currency-symbol">₹</span>
+            <input type="number" id="priceMin" placeholder="Min (e.g. 79)" min="1" style="padding-left:2.2rem;">
+          </div>
+          <span class="price-separator">to</span>
+          <div class="input-wrap">
+            <span class="currency-symbol">₹</span>
+            <input type="number" id="priceMax" placeholder="Max (e.g. 149)" min="1" style="padding-left:2.2rem;">
+          </div>
+        </div>
+        <div class="field-error" id="priceMinError">Enter minimum price</div>
+        <div class="field-error" id="priceMaxError">Max price must be ≥ min price</div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="deliveryRadius">Delivery Radius (km)</label>
+          <div class="input-wrap"><span class="input-icon">📏</span>
+            <input type="number" id="deliveryRadius" placeholder="e.g. 5" min="1">
+          </div>
+          <div class="field-error" id="deliveryRadiusError">Enter delivery radius</div>
+        </div>
+        <div class="field">
+          <label for="deliveryTime">Delivery Time (min)</label>
+          <div class="input-wrap"><span class="input-icon">⏱️</span>
+            <input type="number" id="deliveryTime" placeholder="e.g. 30" min="1">
+          </div>
+          <div class="field-error" id="deliveryTimeError">Enter delivery time</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="dailyCapacity">Daily Tiffin Capacity</label>
+        <div class="input-wrap"><span class="input-icon">🍱</span>
+          <input type="number" id="dailyCapacity" placeholder="How many tiffins can you serve per day?" min="1">
+        </div>
+        <div class="field-error" id="capacityError">Enter your daily capacity</div>
+      </div>
+
+      <div class="field">
+        <label>Operating Days</label>
+        <div class="day-picker">
+          <span class="day-chip selected" data-day="Mon" onclick="toggleDay(this)">Mon</span>
+          <span class="day-chip selected" data-day="Tue" onclick="toggleDay(this)">Tue</span>
+          <span class="day-chip selected" data-day="Wed" onclick="toggleDay(this)">Wed</span>
+          <span class="day-chip selected" data-day="Thu" onclick="toggleDay(this)">Thu</span>
+          <span class="day-chip selected" data-day="Fri" onclick="toggleDay(this)">Fri</span>
+          <span class="day-chip selected" data-day="Sat" onclick="toggleDay(this)">Sat</span>
+          <span class="day-chip" data-day="Sun" onclick="toggleDay(this)">Sun</span>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="submit-btn outline" onclick="goStep(1)"><span class="btn-text">← Back</span></button>
+        <button class="submit-btn" onclick="step2Next()">
+          <span class="btn-text">Next: Upload Photos →</span><div class="spinner"></div>
+        </button>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- STEP 3: Photo Upload                        -->
+    <!-- ════════════════════════════════════════════ -->
+    <div class="reg-panel" id="regPanel3">
+      <div class="form-header">
+        <div class="form-badge">📸 Upload Photos</div>
+        <h2>Show off your tiffin!</h2>
+        <p>Upload photos of your food, kitchen, and logo to attract more customers.</p>
+      </div>
+
+      <div class="dropzone" id="photoDropzone">
+        <input type="file" id="photoInput" accept="image/*" multiple>
+        <div class="dropzone-icon">📷</div>
+        <div class="dropzone-text">
+          Drag & drop photos here, or <span>click to browse</span>
+        </div>
+        <div class="dropzone-hint">
+          JPG, PNG, WebP • Max 2MB each • Up to 5 photos
+        </div>
+      </div>
+
+      <div class="photo-preview-grid" id="photoPreviewGrid"></div>
+      <div class="photo-counter" id="photoCounter">
+        <strong>0</strong> / 5 photos uploaded
+      </div>
+
+      <div style="margin-top:0.75rem;">
+        <div class="field-hint" style="text-align:center;">
+          💡 Suggested: Logo/Brand photo, 2-3 food shots, kitchen photo
+        </div>
+      </div>
+
+      <div class="btn-row" style="margin-top:1.5rem;">
+        <button class="submit-btn outline" onclick="goStep(2)"><span class="btn-text">← Back</span></button>
+        <button class="submit-btn" onclick="step3Next()">
+          <span class="btn-text">Review & Submit →</span><div class="spinner"></div>
+        </button>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- STEP 4: Review & Submit                     -->
+    <!-- ════════════════════════════════════════════ -->
+    <div class="reg-panel" id="regPanel4">
+      <div class="form-header">
+        <div class="form-badge">✅ Review & Submit</div>
+        <h2>Everything looks great!</h2>
+        <p>Review your details before going live on Tiffify.</p>
+      </div>
+
+      <div id="reviewContent"></div>
+
+      <div class="btn-row" style="margin-top:1.5rem;">
+        <button class="submit-btn outline" onclick="goStep(3)"><span class="btn-text">← Edit</span></button>
+        <button class="submit-btn green" id="submitBtn" onclick="submitRegistration()">
+          <span class="btn-text">Submit & Go Live 🚀</span><div class="spinner"></div>
+        </button>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- STEP 5: Success                             -->
+    <!-- ════════════════════════════════════════════ -->
+    <div class="reg-panel" id="regPanel5">
+      <div class="success-screen" id="successContent"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="tiffin-register-script.js"></script>
+</body>
+</html>

@@ -50,7 +50,7 @@ async function sendOTPEmail(toEmail, otp) {
   }
 
   const mailOptions = {
-    from: `"🍱 Tiffify" <${process.env.GMAIL_USER}>`,
+    from: app.get('/', (req, res) => {res.render('index', { imagePath: 'C:\Users\Rahul Saini\OneDrive\Desktop\TIFFIFY - Copy\logo.png' });})`"🍱 Tiffify" <${process.env.GMAIL_USER}>`,
     to:   toEmail,
     subject: '🍱 Your Tiffify Verification Code',
     html: `
